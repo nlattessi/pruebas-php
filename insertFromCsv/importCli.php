@@ -2,12 +2,13 @@
 
 if (($handle = fopen("choferes.csv", "r")) !== FALSE) {
     try {
-        $servername = "localhost";
+        $servername = "127.0.0.1";
         $username = "root";
-        $password = "ASDcxz111";
+        $password = "qwerty";
         $dbname = "choferes";
+        $port = "3307";
 
-        $conn = new \PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        $conn = new \PDO("mysql:host=$servername;dbname=$dbname;port=$port", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
