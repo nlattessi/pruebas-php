@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use Slim\Views\Twig as View;
 
 class HomeController extends Controller
