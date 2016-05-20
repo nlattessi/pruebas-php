@@ -60,4 +60,32 @@ class BooksControllerTest extends TestCase
             'BooksController@show route matching when it should not.'
         );
     }
+
+    public function testStoreShouldSaveNewBookInTheDatabase()
+    {
+        $this
+            ->json('POST', '/books', [
+                'title' => 'The Invisible Man',
+                'description' => 'An invisible man is trapped in the terror of his own creation',
+                'author' => 'H. G. Wells'
+            ]);
+
+        $this
+            ->seeJson(['created' => true])
+            ->seeInDatabase('books', ['title' => 'The Invisible Man']);
+    }
+
+    public function testStoreShouldRespondWithA201AndLocationHeaderWhenSuccess()
+    {
+        $this
+            ->json('POST', '/books', [
+                'title' => 'The Invisible Man',
+                'description' => 'An invisible man is trapped in the terror of his own creation',
+                'author' => 'H. G. Wells'
+            ]);
+
+        $this
+            ->seeStatusCode(201)
+            ->seeHeaderWithRegExp('Location', '#/books/[\d]+$#');
+    }
 }
