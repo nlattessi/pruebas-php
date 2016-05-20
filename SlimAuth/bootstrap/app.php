@@ -14,8 +14,8 @@ $app = new \Slim\App([
             'host' => '127.0.0.1',
             'database' => 'SlimAuth',
             'username' => 'root',
-            //'password' => 'qwerty',
-            'password' => 'ASDcxz111',
+            'password' => 'qwerty',
+            // 'password' => 'ASDcxz111',
             'charset' => 'utf8',
         ],
     ],
@@ -70,6 +70,10 @@ $container['HomeController'] = function ($container) {
 
 $container['AuthController'] = function ($container) {
     return new \App\Controllers\Auth\AuthController($container);
+};
+
+$container['PasswordController'] = function ($container) {
+    return new \App\Controllers\Auth\PasswordController($container);
 };
 
 $container['csrf'] = function ($container) {

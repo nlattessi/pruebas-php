@@ -2,6 +2,10 @@
 
 {% block content %}
 
-	Home
+	{% if auth.check %}
+        Hello {{ auth.user.name }}!
+    {% else %}
+        Home
+    {% endif %}
 
 {% endblock %}
