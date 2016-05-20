@@ -11,26 +11,55 @@ class BooksController
 {
     public function index()
     {
-        return Book::all();
+        return ['data' => Book::all()->toArray()];
     }
 
     public function show($id)
     {
-        try {
-            return Book::findOrFail($id);    
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => [
-                    'message' => 'Book not found'
-                ],
-            ], 404);
-        }
+        return ['data' => Book::findOrFail($id)->toArray()];
     }
 
     public function store(Request $request)
     {
         $book = Book::create($request->all());
 
-        return response()->json(['created' => true], 201);
+        return response()->json(['data' => $book->toArray()], 201, [
+            'Location' => route('books.show', ['id' => $book->id])
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $book = Book::findOrFail($id);    
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => [
+                    'message' => 'Book not found'
+                ]
+            ], 404);
+        }
+        
+        $book->fill($request->all());
+        $book->save();
+
+        return ['data' => $book->toArray()];
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $book = Book::findOrFail($id);    
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => [
+                    'message' => 'Book not found'
+                ]
+            ], 404);
+        }
+        
+        $book->delete();
+
+        return response(null, 204);
     }
 }

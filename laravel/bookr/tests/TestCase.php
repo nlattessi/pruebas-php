@@ -1,7 +1,11 @@
 <?php
 
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
 class TestCase extends Laravel\Lumen\Testing\TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * Creates the application.
      *
@@ -14,6 +18,23 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
 
     public function seeHasHeader($header)
     {
-        $this->asser
+        $this->assertTrue(
+            $this->response->headers->has($header),
+            "Response should have the header '{$header}' but does not."
+        );
+
+        return $this;
+    }
+
+    public function seeHeaderWithRegExp($header, $regexp)
+    {
+        $this
+            ->seeHasHeader($header)
+            ->assertRegExp(
+                $regexp,
+                $this->response->headers->get($header)
+            );
+
+        return $this;
     }
 }
