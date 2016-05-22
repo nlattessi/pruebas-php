@@ -21,4 +21,77 @@ class FractalResponseTest extends TestCase
         $fractal = new FractalResponse($manager, $serializer);
         $this->assertInstanceOf(FractalResponse::class, $fractal);
     }
+
+    public function testItCanTransformAnItem()
+    {
+        // Transformer
+        $transformer = m::mock('League\Fractal\TransformerAbstract');
+
+        // Scope
+        $scope = m::mock('League\Fractal\Scope');
+        $scope
+            ->shouldReceive('toArray')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+
+        // Serializer
+        $serializer = m::mock('League\Fractal\Serializer\SerializerAbstract');
+
+        // Manager
+        $manager = m::mock('League\Fractal\Manager');
+        $manager
+            ->shouldReceive('setSerializer')
+            ->with($serializer)
+            ->once();
+
+        $manager
+            ->shouldReceive('createData')
+            ->once()
+            ->andReturn($scope);
+
+        $subject = new FractalResponse($manager, $serializer);
+        $this->assertInternalType(
+            'array',
+            $subject->item(['foo' => 'bar'], $transformer)
+        );
+    }
+
+    public function testItCanTransformACollection()
+    {
+        $data = [
+            ['foo' => 'bar'],
+            ['fizz' => 'buzz']
+        ];
+
+        // Transformer
+        $transformer = m::mock('League\Fractal\TransformerAbstract');
+
+        // Scope
+        $scope = m::mock('League\Fractal\Scope');
+        $scope
+            ->shouldReceive('toArray')
+            ->once()
+            ->andReturn(['foo' => 'bar']);
+
+        // Serializer
+        $serializer = m::mock('League\Fractal\Serializer\SerializerAbstract');
+
+        // Manager
+        $manager = m::mock('League\Fractal\Manager');
+        $manager
+            ->shouldReceive('setSerializer')
+            ->with($serializer)
+            ->once();
+
+        $manager
+            ->shouldReceive('createData')
+            ->once()
+            ->andReturn($scope);
+
+        $subject = new FractalResponse($manager, $serializer);
+        $this->assertInternalType(
+            'array',
+            $subject->collection($data, $transformer)
+        );
+    }
 }

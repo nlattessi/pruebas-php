@@ -3,27 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Transformers\BookTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-// class BooksController extends Controller
-class BooksController
+class BooksController extends Controller
 {
     public function index()
     {
-        return ['data' => Book::all()->toArray()];
+        return $this->collection(Book::all(), new BookTransformer);
     }
 
     public function show($id)
     {
-        return ['data' => Book::findOrFail($id)->toArray()];
+        return $this->item(Book::findOrFail($id), new BookTransformer);
     }
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'author' => 'required'
+        ],[
+            'description.required' => 'Please fill out the :attribute.'
+        ]);
+        
         $book = Book::create($request->all());
+        $data = $this->item($book, new BookTransformer);
 
-        return response()->json(['data' => $book->toArray()], 201, [
+        return response()->json($data, 201, [
             'Location' => route('books.show', ['id' => $book->id])
         ]);
     }
@@ -39,11 +48,19 @@ class BooksController
                 ]
             ], 404);
         }
+
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'author' => 'required'
+        ],[
+            'description.required' => 'Please fill out the :attribute.'
+        ]);
         
         $book->fill($request->all());
         $book->save();
 
-        return ['data' => $book->toArray()];
+        return $this->item($book, new BookTransformer);
     }
 
     public function destroy($id)
