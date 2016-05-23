@@ -17,19 +17,17 @@ class BooksControllerValidationTest extends TestCase
 
         $this->assertArrayHasKey('title', $body);
         $this->assertArrayHasKey('description', $body);
-        $this->assertArrayHasKey('author', $body);
 
         $this->assertEquals(["The title field is required."], $body['title']);
         $this->assertEquals(
             ["Please fill out the description."],
             $body['description']
         );
-        $this->assertEquals(["The author field is required."], $body['author']);
     }
 
     public function testItValidatesRequiredFieldsWhenUpdatingANewBook()
     {
-        $book = factory(\App\Book::class)->create();
+        $book = $this->bookFactory();
 
         $this->put("/books/{$book->id}", [], ['Accept' => 'application/json']);
 
@@ -39,26 +37,24 @@ class BooksControllerValidationTest extends TestCase
 
         $this->assertArrayHasKey('title', $body);
         $this->assertArrayHasKey('description', $body);
-        $this->assertArrayHasKey('author', $body);
 
         $this->assertEquals(["The title field is required."], $body['title']);
         $this->assertEquals(
             ["Please fill out the description."],
             $body['description']
         );
-        $this->assertEquals(["The author field is required."], $body['author']);
     }
 
     public function testTitleFailsCreateValidationWhenJustTooLong()
     {
         // Creating a book
-        $book = factory(\App\Book::class)->make();
+        $book = $this->bookFactory();
         $book->title = str_repeat('a', 256);
 
         $this->post('/books', [
             'title' => $book->title,
             'description' => $book->description,
-            'author' => $book->author,
+            'author_id' => $book->author->id,
         ], ['Accept' => 'application/json']);
 
         $this
@@ -72,13 +68,13 @@ class BooksControllerValidationTest extends TestCase
     public function testTitleFailsUpdateValidationWhenJustTooLong()
     {
         // Updating a book
-        $book = factory(\App\Book::class)->create();
+        $book = $this->bookFactory();
         $book->title = str_repeat('a', 256);
 
         $this->put("/books/{$book->id}", [
             'title' => $book->title,
             'description' => $book->description,
-            'author' => $book->author,
+            'author_id' => $book->author->id,
         ], ['Accept' => 'application/json']);
 
         $this
@@ -92,13 +88,13 @@ class BooksControllerValidationTest extends TestCase
     public function testTitlePassesCreateValidationWhenExactlyMax()
     {
         // Creating a new book
-        $book = factory(\App\Book::class)->make();
+        $book = $this->bookFactory();
         $book->title = str_repeat('a', 255);
 
         $this->post('/books', [
             'title' => $book->title,
             'description' => $book->description,
-            'author' => $book->author,
+            'author_id' => $book->author->id,
         ], ['Accept' => 'application/json']);
 
         $this
@@ -109,13 +105,13 @@ class BooksControllerValidationTest extends TestCase
     public function testTitlePassesUpdateValidationWhenExactlyMax()
     {
         // Creating a new book
-        $book = factory(\App\Book::class)->make();
+        $book = $this->bookFactory();
         $book->title = str_repeat('a', 255);
 
         $this->post('/books', [
             'title' => $book->title,
             'description' => $book->description,
-            'author' => $book->author,
+            'author_id' => $book->author->id,
         ], ['Accept' => 'application/json']);
 
         $this
