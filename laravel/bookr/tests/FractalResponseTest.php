@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use App\Http\Response\FractalResponse;
 use Illuminate\Http\Request;
 use League\Fractal\Manager;

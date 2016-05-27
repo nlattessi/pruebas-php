@@ -1,8 +1,10 @@
 <?php
 
+namespace Tests;
+
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-class TestCase extends Laravel\Lumen\Testing\TestCase
+class TestCase extends \Laravel\Lumen\Testing\TestCase
 {
     use MockeryPHPUnitIntegration;
 
@@ -54,5 +56,21 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
         }
 
         return $books;
+    }
+
+    public function bundleFactory($bookCount = 2)
+    {
+        if ($bookCount <= 1) {
+            throw new \RuntimeException('A bundle must have two or more books!');
+        }
+
+        $bundle = factory(\App\Bundle::class)->create();
+        $books = $this->bookFactory($bookCount);
+
+        $books->each(function ($book) use ($bundle) {
+            $bundle->books()->attach($book);
+        });
+
+        return $bundle;
     }
 }

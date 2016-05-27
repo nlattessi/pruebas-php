@@ -1,9 +1,11 @@
 <?php
 
+namespace Tests\App\Http\Controllers;
+
 use Illuminate\Http\Response;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
-class AuthorsControllerValidationTest extends TestCase
+class AuthorsControllerValidationTest extends \Tests\TestCase
 {
     use DatabaseMigrations;
 

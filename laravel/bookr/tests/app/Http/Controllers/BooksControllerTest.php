@@ -1,9 +1,11 @@
 <?php
 
+namespace Tests\App\Http\Controllers;
+
 use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
-class BooksControllerTest extends TestCase
+class BooksControllerTest extends \Tests\TestCase
 {
     use DatabaseMigrations;
 

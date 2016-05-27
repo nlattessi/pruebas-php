@@ -1,19 +1,13 @@
 <?php
 
+namespace Tests\App\Http\Controllers;
+
 use Illuminate\Http\Response;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
-class AuthorsControllerTest extends TestCase
+class AuthorsControllerTest extends \Tests\TestCase
 {
     use DatabaseMigrations;
-
-    // public function setUp()
-    // {
-    // }
-
-    // public function tearDown()
-    // {
-    // }
 
     public function testIndexRespondsWith200StatusCode()
     {

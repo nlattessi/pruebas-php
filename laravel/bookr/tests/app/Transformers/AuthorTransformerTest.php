@@ -1,11 +1,13 @@
 <?php
 
+namespace Tests\Transformers;
+
 use App\Author;
 use App\Transformers\AuthorTransformer;
 use League\Fractal\TransformerAbstract;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
-class AuthorTransformerTest extends TestCase
+class AuthorTransformerTest extends \Tests\TestCase
 {
     use DatabaseMigrations;
 
@@ -21,9 +23,17 @@ class AuthorTransformerTest extends TestCase
         $this->assertInstanceOf(AuthorTransformer::class, $this->subject);
     }
 
-    public function testItCanTransformAnAuthor()
+    public function test_it_can_transform_an_author()
     {
         $author = factory(\App\Author::class)->create();
+
+        $author->ratings()->save(
+            factory(\App\Rating::class)->make(['value' => 5])
+        );
+
+        $author->ratings()->save(
+            factory(\App\Rating::class)->make(['value' => 3])
+        );
 
         $actual = $this->subject->transform($author);
 
@@ -39,6 +49,14 @@ class AuthorTransformerTest extends TestCase
             $author->updated_at->toIso8601String(),
             $actual['updated']
         );
+
+        // Rating
+        $this->assertArrayHasKey('rating', $actual);
+        $this->assertInternalType('array', $actual['rating']);
+        $this->assertEquals(4, $actual['rating']['average']);
+        $this->assertEquals(5, $actual['rating']['max']);
+        $this->assertEquals(80, $actual['rating']['percent']);
+        $this->assertEquals(2, $actual['rating']['count']);
     }
 
     public function testItCanTransformRelatedBooks()

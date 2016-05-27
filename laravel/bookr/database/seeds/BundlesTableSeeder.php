@@ -14,6 +14,9 @@ class BundlesTableSeeder extends Seeder
                 $book = \App\Book::whereNotIn('id', $bookIds)
                     ->orderByRaw("RAND()")
                     ->first();
+                $bundle->books()->attach($book);
+                $bookIds[] = $book->id;
+                $booksCount--;
             }
         });
     }

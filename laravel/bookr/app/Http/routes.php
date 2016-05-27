@@ -36,4 +36,22 @@ $app->group([
     $app->post('/', 'AuthorsController@store');
     $app->put('/{id: [\d]+}', 'AuthorsController@update');
     $app->delete('/{id: [\d]+}', 'AuthorsController@destroy');
+
+    // Authors ratings
+    $app->post('/{id: [\d]+}/ratings', 'AuthorsRatingsController@store');
+    $app->delete('/{authorId: [\d]+}/ratings/{ratingId: [\d]+}', 'AuthorsRatingsController@destroy');
+});
+
+$app->group([
+    'prefix' => '/bundles',
+    'namespace' => 'App\Http\Controllers'
+], function(\Laravel\Lumen\Application $app) {
+    // $app->get('/', 'AuthorsController@index');
+    $app->get('/{id: [\d]+}', [
+        'as' => 'bundles.show',
+        'uses' => 'BundlesController@show'
+    ]);
+    //$app->post('/', 'AuthorsController@store');
+    $app->put('/{bundleId: [\d]+}/books/{bookId: [\d]+}', 'BundlesController@addBook');
+    $app->delete('/{bundleId: [\d]+}/books/{bookId: [\d]+}', 'BundlesController@removeBook');
 });

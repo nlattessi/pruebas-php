@@ -1,11 +1,13 @@
 <?php
 
+namespace Tests\Transformers;
+
 use App\Book;
 use App\Transformers\BookTransformer;
 use League\Fractal\TransformerAbstract;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
-class BookTransformerTest extends TestCase
+class BookTransformerTest extends \Tests\TestCase
 {
     use DatabaseMigrations;
 
