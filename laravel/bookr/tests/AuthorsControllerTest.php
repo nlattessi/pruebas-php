@@ -137,4 +137,70 @@ class AuthorsControllerTest extends TestCase
 
         $this->seeInDatabase('authors', $postData);
     }
+
+    public function testStoreReturnsAValidLocationHeader()
+    {
+        $postData = [
+            'name' => 'H. G. Wells',
+            'gender' => 'male',
+            'biography' => 'Prolific Science-Fiction Writer'
+        ];
+
+        $this
+            ->post('/authors', $postData, ['Accept' => 'application/json'])
+            ->seeStatusCode(Response::HTTP_CREATED);
+
+        $data = $this->response->getData(true);
+        $this->assertArrayHasKey('data', $data);
+        $this->assertArrayHasKey('id', $data['data']);
+
+        // Check the location header
+        $id = $data['data']['id'];
+        $this->seeHeaderWithRegExp('Location', "#/authors/{$id}$#");
+    }
+
+    public function testUpdateCanUpdateAnExistingAuthor()
+    {
+        $author = factory(\App\Author::class)->create();
+
+        $requestData = [
+            'name' => 'New Author Name',
+            'gender' => $author->gender === 'male' ? 'female' : 'male',
+            'biography' => 'An updated biography',
+        ];
+
+        $this
+            ->put("/authors/{$author->id}",
+                $requestData,
+                ['Accept' => 'application/json']
+            )
+            ->seeStatusCode(Response::HTTP_OK)
+            ->seeJson($requestData)
+            ->seeInDatabase('authors', [
+                'name' => 'New Author Name'
+            ])
+            ->notSeeInDatabase('authors', [
+                'name' => $author->name
+            ]);
+
+            $this->assertArrayHasKey('data', $this->response->getData(true));
+    }
+
+    public function testDeleteCanRemoveAnAuthorAndHisOrHerBooks()
+    {
+        $author = factory(\App\Author::class)->create();
+
+        $this
+            ->delete("/authors/{$author->id}", [], ['Accept' => 'application/json'])
+            ->seeStatusCode(204)
+            ->notSeeInDatabase('authors', ['id' => $author->id])
+            ->notSeeInDatabase('books', ['author_id' => $author->id]);
+    }
+
+    public function testDeletingAnInvalidAuthorShouldReturnA404()
+    {
+        $this
+            ->delete('/authors/99999', [], ['Accept' => 'application/json'])
+            ->seeStatusCode(404);
+    }
 }

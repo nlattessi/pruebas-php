@@ -29,7 +29,10 @@ $app->group([
     'namespace' => 'App\Http\Controllers'
 ], function(\Laravel\Lumen\Application $app) {
     $app->get('/', 'AuthorsController@index');
-    $app->get('/{id: [\d]+}', 'AuthorsController@show');
+    $app->get('/{id: [\d]+}', [
+        'as' => 'authors.show',
+        'uses' => 'AuthorsController@show'
+    ]);
     $app->post('/', 'AuthorsController@store');
     $app->put('/{id: [\d]+}', 'AuthorsController@update');
     $app->delete('/{id: [\d]+}', 'AuthorsController@destroy');
