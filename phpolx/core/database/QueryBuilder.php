@@ -17,4 +17,15 @@ class QueryBuilder
 
         return $statement->fetchAll(PDO::FETCH_CLASS);
     }
+
+    public function selectById($table, $id)
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM {$table} WHERE id = :id");
+
+        $statement->execute([
+            'id' => $id
+        ]);
+
+        return $statement->fetchAll(PDO::FETCH_CLASS);
+    }
 }
