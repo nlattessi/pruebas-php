@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) unsigned NOT NULL,
   `name` varchar(100) NOT NULL,
   `picture` varchar(200) DEFAULT NULL,
-  `address` text NOT NULL
+  `address` text NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
