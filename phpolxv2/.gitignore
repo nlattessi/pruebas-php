@@ -1,2 +1,4 @@
 vendor/
 phpunit.phar
+.env
+.env-docker

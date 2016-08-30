@@ -1,16 +1,11 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-
-class GetUsersTest extends TestCase
+class GetUsersTest extends \PHPUnit_Framework_TestCase
 {
     private $client;
 
     public function setUp()
     {
-        $dotenv = new Dotenv\Dotenv(__DIR__ . '/../');
-        $dotenv->load();
-
         $this->client = new \GuzzleHttp\Client([
             'base_uri' => getenv('TEST_BASE_URI')
         ]);
@@ -28,6 +23,7 @@ class GetUsersTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
 
         $data = json_decode($response->getBody(), true);
+
         $this->assertArrayHasKey('id', $data);
         $this->assertArrayHasKey('name', $data);
         $this->assertArrayHasKey('address', $data);
@@ -48,7 +44,7 @@ class GetUsersTest extends TestCase
                 ],
                 [
                     'name' => 'picture',
-                    'contents' => fopen('./tests/cara.jpg', 'r')
+                    'contents' => fopen(getenv('TEST_IMAGE_PATH'), 'r')
                 ],
             ],
         ]);
@@ -87,7 +83,7 @@ class GetUsersTest extends TestCase
                 ],
                 [
                     'name' => 'picture',
-                    'contents' => fopen('./tests/cara.jpg', 'r')
+                    'contents' => fopen(getenv('TEST_IMAGE_PATH'), 'r')
                 ],
             ],
         ]);

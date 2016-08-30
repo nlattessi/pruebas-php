@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="/var/www/html/app/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true">
+  <testsuites>
+    <testsuite name="Tests">
+      <directory suffix="Test.php">/var/www/html/tests</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+      <env name="TEST_BASE_URI" value="http://nginx"/>
+      <env name="TEST_IMAGE_PATH" value="/var/www/html/tests/cara.jpg"/>
+  </php>
+</phpunit>

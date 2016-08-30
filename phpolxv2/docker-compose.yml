@@ -1,4 +1,49 @@
-nginx:
-    image: nginx:latest
+version: '2'
+services:
+  nginx:
+    build: ./docker/nginx/
     ports:
-        - 80:80
+      - 8100:80
+    links:
+      - php
+    volumes_from:
+      - app_data
+    depends_on:
+      - php
+    container_name: olx-nginx
+
+  php:
+    build: ./docker/php/
+    expose:
+      - 9000
+    links:
+      - mysql_data
+    volumes_from:
+      - app_data
+    depends_on:
+      - mysql
+    container_name: olx-php
+    env_file: .env-docker
+
+  app_data:
+    image: php:7.0-fpm
+    volumes:
+      - .:/var/www/html
+    command: "true"
+    container_name: olx-app-data
+
+  mysql:
+    build: ./docker/mysql/
+    ports:
+      - 33060:3306
+    volumes_from:
+      - mysql_data
+    container_name: olx-mysql
+    env_file: .env-docker
+
+  mysql_data:
+    image: mysql:latest
+    volumes:
+      - /var/lib/mysql
+    command: "true"
+    container_name: olx-mysql-data
