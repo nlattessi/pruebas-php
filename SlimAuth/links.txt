@@ -1,0 +1,7 @@
+https://siipo.la/blog/how-to-use-eloquent-orm-migrations-outside-laravel
+
+http://docs.phinx.org/en/latest/commands.html
+
+https://laravel.com/docs/5.3/migrations#creating-columns
+
+https://www.youtube.com/playlist?list=PLfdtiltiRHWGc_yY90XRdq6mRww042aEC

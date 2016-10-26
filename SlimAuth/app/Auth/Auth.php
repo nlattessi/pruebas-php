@@ -8,7 +8,7 @@ class Auth
 {
     public function user()
     {
-        return User::find($_SESSION['user']);
+        return User::find($this->check() ? $_SESSION['user'] : null);
     }
     
     public function check()

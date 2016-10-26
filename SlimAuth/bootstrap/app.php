@@ -11,12 +11,13 @@ $app = new \Slim\App([
         'displayErrorDetails' => true,
         'db' => [
             'driver' => 'mysql',
-            'host' => '127.0.0.1',
+            'host' => 'localhost',
             'database' => 'SlimAuth',
-            'username' => 'root',
-            'password' => 'qwerty',
-            // 'password' => 'ASDcxz111',
+            'username' => 'homestead',
+            'password' => 'secret',
             'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
         ],
     ],
 ]);
