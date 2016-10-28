@@ -24,3 +24,5 @@ $app
     })
     ->add(new AuthMiddleware($container));
 
+$app->get('/images', 'ImageController:index')->setName('image.index')->add(new AuthMiddleware($container));
+$app->post('/images/upload', 'ImageController:upload')->setName('image.upload')->add(new AuthMiddleware($container));

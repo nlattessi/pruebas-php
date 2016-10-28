@@ -19,6 +19,9 @@ $app = new \Slim\App([
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
         ],
+        'files' => [
+            'uploadPath' => dirname(__DIR__) . '/files',
+        ],
     ],
 ]);
 
@@ -75,6 +78,10 @@ $container['AuthController'] = function ($container) {
 
 $container['PasswordController'] = function ($container) {
     return new \App\Controllers\Auth\PasswordController($container);
+};
+
+$container['ImageController'] = function ($container) {
+    return new \App\Controllers\ImageController($container);
 };
 
 $container['csrf'] = function ($container) {
