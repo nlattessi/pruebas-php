@@ -21,8 +21,10 @@ $app
 
         $this->get('/auth/password/change', 'PasswordController:getChangePassword')->setName('auth.password.change');
         $this->post('/auth/password/change', 'PasswordController:postChangePassword');
+
+        $this->get('/images', 'ImageController:index')->setName('images.index');
+        $this->get('/images/upload', 'ImageController:getUpload')->setName('images.upload');
+        $this->post('/images/upload', 'ImageController:postUpload');
+
     })
     ->add(new AuthMiddleware($container));
-
-$app->get('/images', 'ImageController:index')->setName('image.index')->add(new AuthMiddleware($container));
-$app->post('/images/upload', 'ImageController:upload')->setName('image.upload')->add(new AuthMiddleware($container));

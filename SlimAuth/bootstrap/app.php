@@ -45,14 +45,17 @@ $container['flash'] = function ($container) {
 };
 
 $container['view'] = function ($container) {
-	$view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', [
-		'cache' => false,
-	]);
+    $view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', [
+        'cache' => false,
+        // 'debug' => true,
+    ]);
 
-	$view->addExtension(new \Slim\Views\TwigExtension(
-		$container->router,
-		$container->request->getUri()
-	));
+    $view->addExtension(new \Slim\Views\TwigExtension(
+        $container->router,
+        $container->request->getUri()
+    ));
+
+    // $view->addExtension(new \Twig_Extension_Debug());
 
     $view->getEnvironment()->addGlobal('auth', [
         'check' => $container->auth->check(),
@@ -61,7 +64,7 @@ $container['view'] = function ($container) {
 
     $view->getEnvironment()->addGlobal('flash', $container->flash);
 
-	return $view;
+    return $view;
 };
 
 $container['validator'] = function ($container) {
@@ -69,7 +72,7 @@ $container['validator'] = function ($container) {
 };
 
 $container['HomeController'] = function ($container) {
-	return new \App\Controllers\HomeController($container);
+    return new \App\Controllers\HomeController($container);
 };
 
 $container['AuthController'] = function ($container) {
