@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Email Form with Attachment</title>
+
+    <style>
+        fieldset {
+            width: 500px;
+        }
+        legend {
+            font-size: 20px;
+        }
+        label.field {
+            text-align: right;
+            width: 100px;
+            float: left;
+            font-weight: bold;
+        }
+        input.textbox-300 {
+            width: 300px;
+            float: left;
+            margin-left: 10px;
+        }
+        textarea.textbox-300 {
+            width: 300px;
+            float: left;
+            margin-left: 10px;
+        }
+        input.submit {
+            float: left;
+            margin-left: 110px;
+        }
+        fieldset p {
+            clear: both;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="POST" name="email_form_with_attachment" action="process-form.php" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Send email</legend>
+            <p><label class="field" for="email">Email</label><input class="textbox-300" type="email" name="email"></p>
+            <p><label class="field" for="name">Subject</label><input class="textbox-300" type="text" name="subject"></p>
+            <p><label class="field" for="message">Message</label><textarea class="textbox-300" name="message"></textarea></p>
+            <p><label class="field" for="attachment">Attachment</label><input class="textbox-300" type="file" name="attachment"></p>
+            <br>
+            <p><input class="submit" type="submit" value="Send" name="submit"></p>
+        </fieldset>
+    </form>
+</body>
+
+</html>
